@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_settings"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.example.bribri.myapplication.activities.SettingsActivity"
+    tools:showIn="@layout/activity_settings">
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/settings_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/settings_holder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/settings_customize_colors_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:background="?attr/selectableItemBackground"
+                android:padding="@dimen/activity_margin">
+
+                <TextView
+                    android:id="@+id/settings_customize_colors_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="@dimen/medium_margin"
+                    android:paddingStart="@dimen/medium_margin"
+                    android:text="@string/customize_colors"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/settings_sunday_first_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:background="?attr/selectableItemBackground"
+                android:padding="@dimen/activity_margin">
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/settings_sunday_first"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:clickable="false"
+                    android:paddingLeft="@dimen/medium_margin"
+                    android:paddingStart="@dimen/medium_margin"
+                    android:text="@string/sunday_first"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/settings_week_numbers_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:background="?attr/selectableItemBackground"
+                android:padding="@dimen/activity_margin">
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/settings_week_numbers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:clickable="false"
+                    android:paddingLeft="@dimen/medium_margin"
+                    android:paddingStart="@dimen/medium_margin"
+                    android:text="@string/week_numbers"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/settings_vibrate_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:background="?attr/selectableItemBackground"
+                android:padding="@dimen/activity_margin">
+
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/settings_vibrate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:clickable="false"
+                    android:paddingLeft="@dimen/medium_margin"
+                    android:paddingStart="@dimen/medium_margin"
+                    android:text="@string/vibrate"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/settings_reminder_sound_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:background="?attr/selectableItemBackground"
+                android:paddingBottom="@dimen/bigger_margin"
+                android:paddingLeft="@dimen/activity_margin"
+                android:paddingRight="@dimen/activity_margin"
+                android:paddingTop="@dimen/bigger_margin">
+
+                <TextView
+                    android:id="@+id/settings_reminder_sound_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="@dimen/medium_margin"
+                    android:paddingStart="@dimen/medium_margin"
+                    android:text="@string/reminder_sound"/>
+
+                <TextView
+                    android:id="@+id/settings_reminder_sound"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginEnd="@dimen/small_margin"
+                    android:layout_marginRight="@dimen/small_margin"
+                    android:background="@null"
+                    android:clickable="false"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/settings_default_reminder_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:paddingBottom="@dimen/activity_margin"
+                android:paddingLeft="@dimen/activity_margin"
+                android:paddingRight="@dimen/medium_margin"
+                android:paddingTop="@dimen/activity_margin">
+
+                <TextView
+                    android:id="@+id/settings_default_reminder_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="@dimen/medium_margin"
+                    android:paddingStart="@dimen/medium_margin"
+                    android:text="@string/default_event_reminder"/>
+
+                <Spinner
+                    android:id="@+id/settings_default_reminder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:entries="@array/reminders"/>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/settings_custom_reminder_holder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/activity_margin"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <EditText
+                    android:id="@+id/custom_reminder_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_margin"
+                    android:layout_marginStart="@dimen/activity_margin"
+                    android:digits="0123456789"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:minEms="3"
+                    android:textCursorDrawable="@null"
+                    android:textSize="@dimen/day_text_size"/>
+
+                <Spinner
+                    android:id="@+id/custom_reminder_other_period"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:entries="@array/custom_reminders"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:id="@+id/custom_reminder_other_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/before"/>
+
+                <android.support.v4.widget.Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:id="@+id/custom_reminder_save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackground"
+                    android:paddingBottom="@dimen/normal_margin"
+                    android:paddingLeft="@dimen/big_margin"
+                    android:paddingRight="@dimen/big_margin"
+                    android:paddingTop="@dimen/normal_margin"
+                    android:text="@string/save"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/bigger_text_size"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

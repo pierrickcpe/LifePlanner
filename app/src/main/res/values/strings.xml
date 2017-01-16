@@ -1,0 +1,116 @@
+<resources>
+    <string name="app_name">LifePlanner</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_allevents">Events</string>
+    <string name="action_week">Week</string>
+    <string name="action_profile">Profil</string>
+    <string name="action_month">Month</string>
+    <string name="title_activity_event">EventActivity</string>
+    <string name="app_launcher_name">Calendar</string>
+    <string name="undo">Undo</string>
+    <string name="change_view">Change view</string>
+    <string name="monthly_view">Monthly view</string>
+    <string name="yearly_view">Yearly view</string>
+    <string name="save">Save</string>
+    <string name="delete">Delete</string>
+    <string name="simple_event_list">Simple event list</string>
+    <string name="no_upcoming_events">Seems like you don\'t have any upcoming events.</string>
+    <string name="add_some_events">You can add some with the Plus button at the bottom.</string>
+    <string name="customize_colors">Customize colors</string>
+
+    <!-- Widget titles -->
+    <string name="widget_monthly">Calendar monthly</string>
+    <string name="widget_list">Calendar event list</string>
+
+    <!-- Event -->
+    <string name="event">Event</string>
+    <string name="edit_event">Edit Event</string>
+    <string name="new_event">New Event</string>
+    <string name="title_empty">Title cannot be empty</string>
+    <string name="end_before_start">The event cannot end earlier than it starts</string>
+    <string name="start_in_past">You cannot schedule events in the past</string>
+    <string name="event_added">Event added successfully</string>
+    <string name="past_event_added">Event in the past added successfully</string>
+    <string name="event_updated">Event updated successfully</string>
+    <string name="reminder">Reminder</string>
+    <string name="off">Off</string>
+    <string name="at_start">At start</string>
+    <string name="custom">Custom</string>
+    <string name="repetition">Repetition</string>
+    <string name="none">None</string>
+    <string name="daily">Daily</string>
+    <string name="weekly">Weekly</string>
+    <string name="biweekly">Biweekly</string>
+    <string name="monthly">Monthly</string>
+    <string name="yearly">Yearly</string>
+
+    <!-- Custom reminder -->
+    <string name="before">before</string>
+    <string name="minutes">minutes</string>
+    <string name="hours">hours</string>
+    <string name="days">days</string>
+
+    <!-- Day details -->
+    <string name="details">Details</string>
+    <string name="title">Title</string>
+    <string name="start">Start</string>
+    <string name="end">End (optional)</string>
+    <string name="description">Description</string>
+
+    <!-- Settings -->
+    <string name="sunday_first">Sunday as first day</string>
+    <string name="week_numbers">Display week numbers</string>
+    <string name="vibrate">Vibrate on reminder notification</string>
+    <string name="reminder_sound">Reminder sound</string>
+    <string name="default_event_reminder">Default event reminder</string>
+    <string name="reminder_saved">Reminder saved</string>
+    <string name="notification_sound">Notification sound</string>
+    <string name="no_ringtone_picker">No app capable of setting ringtone found</string>
+
+    <plurals name="events_deleted">
+        <item quantity="one">1 event deleted</item>
+        <item quantity="other">%1$d events deleted</item>
+    </plurals>
+
+    <string name="january">January</string>
+    <string name="february">February</string>
+    <string name="march">March</string>
+    <string name="april">April</string>
+    <string name="may">May</string>
+    <string name="june">June</string>
+    <string name="july">July</string>
+    <string name="august">August</string>
+    <string name="september">September</string>
+    <string name="october">October</string>
+    <string name="november">November</string>
+    <string name="december">December</string>
+
+    <string name="monday_letter">M</string>
+    <string name="tuesday_letter">T</string>
+    <string name="wednesday_letter">W</string>
+    <string name="thursday_letter">T</string>
+    <string name="friday_letter">F</string>
+    <string name="saturday_letter">S</string>
+    <string name="sunday_letter">S</string>
+
+    <!-- Strings displayed only on Google Playstore. Optional, but good to have -->
+    <!-- Short description has to have less than 80 chars -->
+    <string name="app_short_description">A simple calendar with events, customizable widget and no ads.</string>
+    <string name="app_long_description">
+        An offline calendar without any other calendar integration. You can easily create recurring events and setup reminders, it can also display week numbers.
+
+
+        Contains a resizable 4x4 widget where you can customize the color of the text, as well as the alpha and the color of the background.
+
+        Contains no ads or unnecessary permissions. It is fully opensource, provides a Dark theme too.
+
+        This app is just one piece of a bigger series of apps. You can find the rest of them at http://www.simplemobiletools.com
+    </string>
+    <string name="title_activity_add_event">Add Event</string>
+    <string name="title_activity_all_events">All My Events</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_profile">My Profil</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="menu_edit">Edit</string>
+    <string name="menu_delete">Delete</string>
+</resources>

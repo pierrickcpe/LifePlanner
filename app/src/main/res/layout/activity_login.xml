@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_login"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.bribri.myapplication.activities.LoginActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/main_login_layout">
+
+        <ImageView
+            android:id="@+id/header_cover_image"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/navigation_header_image" />
+
+        <ImageButton
+            android:id="@+id/user_profile_photo"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_below="@+id/header_cover_image"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-60dp"
+            android:background="@drawable/profile_circular_border_imageview"
+            android:elevation="5dp"
+            android:padding="20dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile" />
+
+        <RelativeLayout
+            android:id="@+id/profile_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/header_cover_image"
+            android:background="#eb409dd7"
+            android:elevation="4dp"
+            android:paddingBottom="24dp">
+
+            <TextView
+                android:id="@+id/user_profile_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="76dp"
+                android:text="You are not logged in yet"
+                android:textColor="#fff"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+
+
+            <EditText
+                android:layout_width = "wrap_content"
+                android:layout_height = "wrap_content"
+                android:id = "@+id/editText_username"
+                android:textColor="#fff"
+                android:hint = "Enter Name"
+                android:focusable = "true"
+                android:layout_marginTop = "46dp"
+                android:layout_alignParentLeft = "true"
+                android:layout_alignParentStart = "true"
+                android:layout_alignParentRight = "true"
+                android:layout_alignParentEnd = "true"
+                android:textColorHint="#d2d2d2"
+                android:layout_below="@+id/user_profile_name"
+                android:backgroundTint="#ffffff"/>
+
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:textColor="#fff"
+                android:ems="10"
+                android:id="@+id/editText_password"
+                android:layout_below="@+id/editText_username"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:textColorHint="#d2d2d2"
+                android:layout_alignRight="@+id/editText_username"
+                android:layout_alignEnd="@+id/editText_username"
+                android:hint="Password"
+                android:backgroundTint="#ffffff"/>
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/editText_repassword"
+                android:layout_below="@+id/editText_password"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignRight="@+id/editText_username"
+                android:layout_alignEnd="@+id/editText_username"
+                android:hint="And password again"
+                android:textColorHint="#d2d2d2"
+                android:backgroundTint="#ffffff"
+                android:visibility="gone"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="login"
+                android:id="@+id/button_login"
+                android:layout_below="@+id/editText_repassword"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:id="@+id/button_cancel"
+                android:layout_toRightOf="@+id/button_login"
+                android:layout_below="@+id/editText_repassword"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Register"
+                android:id="@+id/button_Register"
+                android:layout_toRightOf="@+id/button_cancel"
+                android:layout_alignTop="@+id/button_login"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign In"
+                android:id="@+id/button_SignIn"
+                android:layout_toRightOf="@+id/button_cancel"
+                android:layout_alignTop="@+id/button_cancel"
+                android:visibility="gone"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/buttons_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/profile_layout"
+            android:elevation="4dp"
+            android:paddingBottom="24dp">
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+</RelativeLayout>
