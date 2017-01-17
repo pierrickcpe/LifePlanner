@@ -66,4 +66,26 @@ public class InternalSearcher {
         File file = new File(Environment.getExternalStorageDirectory(), "LifePlanner/Credentials");
         file.delete();
     }
+
+    public static String getUrl()
+    {
+        String save = null;
+        try {
+            File file = new File(Environment.getExternalStorageDirectory(), "LifePlanner/Url");
+            FileInputStream fis = new FileInputStream (file);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader bufferedReader = new BufferedReader(isr);
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                sb.append(line);
+            }
+            save = sb.toString();
+            fis.close();
+        }
+        catch(Exception e){
+            return null;
+        }
+        return save;
+    }
 }

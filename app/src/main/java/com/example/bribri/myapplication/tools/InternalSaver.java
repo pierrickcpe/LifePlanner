@@ -79,4 +79,33 @@ public class InternalSaver {
 
         }
     }
+
+    public static void saveUrl(String url){
+        File sdcard = Environment.getExternalStorageDirectory();
+        if( sdcard == null || !sdcard.isDirectory()) {
+            //fail("sdcard not available");
+            return;
+        }
+        File datadir = new File(sdcard, "LifePlanner/");
+
+        if( !datadir.exists() && !datadir.mkdirs() ) {
+            //fail("unable to create data directory");
+            return;
+        }
+        if( !datadir.isDirectory() ) {
+            //fail("exists, but is not a directory");
+            return;
+        }
+        try {
+            File file = new File(datadir, "Url");
+
+            FileWriter writer = new FileWriter(file);
+            writer.append(url);
+            writer.flush();
+            writer.close();
+        }
+        catch (IOException e) {
+
+        }
+    }
 }

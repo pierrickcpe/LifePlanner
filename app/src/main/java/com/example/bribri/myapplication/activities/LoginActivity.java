@@ -19,7 +19,9 @@ import android.widget.Toast;
 import com.example.bribri.myapplication.R;
 import com.example.bribri.myapplication.models.User;
 import com.example.bribri.myapplication.tasks.LoginAsyncTask;
+import com.example.bribri.myapplication.tasks.SignUpAsyncTask;
 import com.example.bribri.myapplication.tools.InternalSaver;
+import com.example.bribri.myapplication.tools.InternalSearcher;
 
 public class LoginActivity extends AppCompatActivity {
     Button bLogin,bCancel,bRegister,bSignIn;
@@ -81,7 +83,8 @@ public class LoginActivity extends AppCompatActivity {
         bSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!eEepassword.getText().equals(ePassword.getText())) {
+
+                if(!eEepassword.getText().toString().equals(ePassword.getText().toString())) {
                     Toast.makeText(getApplicationContext(),
                             "Passwords don't match", Toast.LENGTH_SHORT).show();
                     return;
@@ -92,6 +95,32 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
+                if(InternalSearcher.getUrl()==null){
+                    Toast.makeText(getApplicationContext(),
+                            "Invalid url", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                user = new User(eUserName.getText().toString(),ePassword.getText().toString());
+                SignUpAsyncTask SignUpThread = new SignUpAsyncTask();
+                SignUpAsyncTask.SignUpListener SignUpListener = new SignUpAsyncTask.SignUpListener(){
+                    @Override public void onSignUp(boolean result){
+                        if(result){
+                            Intent intent = new Intent(LoginActivity.this,ProfileActivity.class);
+                            InternalSaver.saveCredentials(user);
+                            startActivity(intent);
+                        }
+                        else{
+                            Toast.makeText(getApplicationContext(), "Wrong Credentials : "+counter + " tries left",Toast.LENGTH_SHORT).show();
+                            counter--;
+                            if (counter == 0) {
+                                bLogin.setEnabled(false);
+                            }
+                        }
+                    }
+                };
+                SignUpThread.setSignUpListener(SignUpListener);
+                SignUpThread.execute(user);
             }
         });
 

@@ -28,14 +28,14 @@
                 android:background="?attr/selectableItemBackground"
                 android:padding="@dimen/activity_margin">
 
-                <TextView
-                    android:id="@+id/settings_customize_colors_label"
+                <EditText
+                    android:id="@+id/settings_url"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:paddingLeft="@dimen/medium_margin"
                     android:paddingStart="@dimen/medium_margin"
-                    android:text="@string/customize_colors"/>
+                    android:hint="Url"/>
 
             </RelativeLayout>
 
