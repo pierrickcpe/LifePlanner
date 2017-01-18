@@ -1,11 +1,15 @@
 package com.example.bribri.myapplication.activities;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
@@ -19,9 +23,12 @@ import android.widget.Toast;
 
 import com.example.bribri.myapplication.R;
 import com.example.bribri.myapplication.adapters.EventAdapter;
+import com.example.bribri.myapplication.fragments.EventDialogFragment;
 import com.example.bribri.myapplication.models.Event;
 import com.example.bribri.myapplication.models.ListEvents;
 import com.example.bribri.myapplication.models.User;
+import com.example.bribri.myapplication.tasks.AddEventAsyncTask;
+import com.example.bribri.myapplication.tasks.DeleteEventAsyncTask;
 import com.example.bribri.myapplication.tasks.GetUserEventsAsyncTask;
 import com.example.bribri.myapplication.tools.Formatter;
 import com.example.bribri.myapplication.tools.InternalSaver;
@@ -54,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,26 +73,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         current = Calendar.getInstance();
-        caldroidFragment = new CaldroidFragment();
-        if (savedInstanceState != null) {
-            caldroidFragment.restoreStatesFromKey(savedInstanceState,
-                    "CALDROID_SAVED_STATE");
-        }
-        else {
-            Bundle args = new Bundle();
-            Calendar cal = Calendar.getInstance();
-            args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
-            args.putInt(CaldroidFragment.YEAR, cal.get(Calendar.YEAR));
-            args.putBoolean(CaldroidFragment.ENABLE_SWIPE, true);
-            args.putBoolean(CaldroidFragment.SIX_WEEKS_IN_CALENDAR, true);
-
-            caldroidFragment.setArguments(args);
-        }
-
         events = new ListEvents();
         events.getSavedDatas();
-
         user = InternalSearcher.getCredential();
+
         if(user!=null)
         {
             GetUserEventsAsyncTask GetListThread = new GetUserEventsAsyncTask();
@@ -101,22 +92,72 @@ public class MainActivity extends AppCompatActivity {
 
         Event newEvent = (Event)getIntent().getSerializableExtra("NewEvent");
         if(newEvent!=null) {
+            current.setTime(newEvent.start);
             events.add(newEvent);
             saveEnvents(events);
-            Toast.makeText(this, "Event added",
-                    Toast.LENGTH_SHORT).show();
             getIntent().removeExtra("NewEvent");
+            if(user!=null)
+            {
+                AddEventAsyncTask AddEventThread = new AddEventAsyncTask();
+                AddEventAsyncTask.AddEventListener AddEventListener = new AddEventAsyncTask.AddEventListener(){
+                    @Override public void onAddEvent(String result) {
+                        if(result.equals("success")) {
+                            Toast.makeText(MainActivity.this, "Event added",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Toast.makeText(MainActivity.this, "Failed to synch with server",
+                                Toast.LENGTH_SHORT).show();
+                        }
+                        refreshEventsOnView();
+                    }
+                };
+                AddEventThread.setAddEventListener(AddEventListener);
+                AddEventThread.execute(newEvent);
+            }
         }
 
         Event toDelete = (Event)getIntent().getSerializableExtra("toDelete");
         if(toDelete!=null) {
             events.delete(toDelete);
             saveEnvents(events);
-            Toast.makeText(this, "Event deleted",
-                    Toast.LENGTH_SHORT).show();
+
             getIntent().removeExtra("toDelete");
+            if(user!=null)
+            {
+                DeleteEventAsyncTask DeleteEventThread = new DeleteEventAsyncTask();
+                DeleteEventAsyncTask.DeleteEventListener DeleteEventListener = new DeleteEventAsyncTask.DeleteEventListener(){
+                    @Override public void onDeleteEvent(String result) {
+                        if(result.equals("success")) {
+                            Toast.makeText(MainActivity.this, "Event deleted",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Toast.makeText(MainActivity.this, "Failed to synch with server",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        refreshEventsOnView();
+                    }
+                };
+                DeleteEventThread.setDeleteEventListener(DeleteEventListener);
+                DeleteEventThread.execute(toDelete);
+            }
         }
 
+        caldroidFragment = new CaldroidFragment();
+        if (savedInstanceState != null) {
+            caldroidFragment.restoreStatesFromKey(savedInstanceState,
+                    "CALDROID_SAVED_STATE");
+        }
+        else {
+            Bundle args = new Bundle();
+            args.putInt(CaldroidFragment.MONTH, current.get(Calendar.MONTH) + 1);
+            args.putInt(CaldroidFragment.YEAR, current.get(Calendar.YEAR));
+            args.putBoolean(CaldroidFragment.ENABLE_SWIPE, true);
+            args.putBoolean(CaldroidFragment.SIX_WEEKS_IN_CALENDAR, true);
+
+            caldroidFragment.setArguments(args);
+        }
         if(events.getEventlist()!=null)
             refreshEventsOnView();
 
@@ -145,12 +186,20 @@ public class MainActivity extends AppCompatActivity {
                         caldroidFragment.setTextColorForDate(R.color.grey, cellSelected);*/
                 }
                 cellSelected = date;
+                caldroidFragment.setBackgroundDrawableForDate(new ColorDrawable(getResources().getColor(R.color.current)), Calendar.getInstance().getTime());
                 caldroidFragment.setBackgroundDrawableForDate(blue, date);
-
                 eventsOfSelectedDate = events.getEventsFromDate(date);
                 ListView listView = (ListView) findViewById(R.id.selected_events);
                 EventAdapter adapter = new EventAdapter(eventsOfSelectedDate, MainActivity.this, "", "");
                 listView.setAdapter(adapter);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position,
+                                            long id) {
+                        EventDialogFragment edf = EventDialogFragment.newInstance(eventsOfSelectedDate.get(position),cellSelected);
+                        edf.show(getFragmentManager(),"frag");
+                    }
+                });
                 registerForContextMenu(listView);
                 caldroidFragment.refreshView();
             }
@@ -158,8 +207,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChangeMonth(int month, int year) {
                 String text = "month: " + month + " year: " + year;
-                current.set(Calendar.MONTH,month-1);
-                current.set(Calendar.YEAR,year);
+                //current.set(Calendar.MONTH,month-1);
+                //current.set(Calendar.YEAR,year);
             }
 
             @Override
@@ -212,6 +261,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent();
         switch(id){
             case R.id.action_allevents:
+                saveEnvents(events);
                 intent = new Intent(MainActivity.this, com.example.bribri.myapplication.activities.AllEventsActivity.class);
                 startActivity(intent);
                 break;
@@ -259,7 +309,6 @@ public class MainActivity extends AppCompatActivity {
                 return super.onContextItemSelected(item);
         }
     }
-
 
     private void refreshEventsOnView(){
         for (int i = 0; i < events.size(); i++)

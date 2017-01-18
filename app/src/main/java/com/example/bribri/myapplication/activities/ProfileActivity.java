@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.bribri.myapplication.R;
 import com.example.bribri.myapplication.models.User;
@@ -16,7 +17,7 @@ import com.example.bribri.myapplication.tools.InternalSaver;
 import com.example.bribri.myapplication.tools.InternalSearcher;
 
 public class ProfileActivity extends AppCompatActivity {
-    TextView tvName, tvDisconnect, tvSwitch;
+    TextView tvName, tvDisconnect, tvSwitch, tvDelete;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +46,16 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(ProfileActivity.this,LoginActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        tvDelete = (TextView)findViewById(R.id.tv_delete);
+        tvDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                InternalSearcher.deleteAutoSave();
+                Toast.makeText(ProfileActivity.this, "Events deleted",
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }

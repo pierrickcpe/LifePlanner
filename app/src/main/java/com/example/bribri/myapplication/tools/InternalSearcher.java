@@ -67,6 +67,11 @@ public class InternalSearcher {
         file.delete();
     }
 
+    public static void deleteAutoSave(){
+        File file = new File(Environment.getExternalStorageDirectory(), "LifePlanner/AutoSave");
+        file.delete();
+    }
+
     public static String getUrl()
     {
         String save = null;

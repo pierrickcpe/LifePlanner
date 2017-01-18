@@ -11,19 +11,19 @@ import java.util.Date;
 
 
 public class Event implements Serializable{
-    public int id;
+    public String id;
     public String title;
     public String description;
     String color;
     String status;
     public Date start;
     public Date end;
-    String reminder;
+    public String reminder;
     String locationsCoord;
     String locationsName;
     String author;
 
-    public Event(int id, String title, String description, Date start, Date end)
+    public Event(String id, String title, String description, Date start, Date end)
     {
         this.id = id;
         this.description = description;
@@ -57,9 +57,15 @@ public class Event implements Serializable{
             String dateFin = DateFormat.format("yyyy.MM.dd", end.getTime()).toString();
             if(!dateFin.equals(DateFormat.format("yyyy.MM.dd", object.end.getTime()).toString()))
                 return false;
-            if(object.title.equals(this.title) && object.description.equals(this.description) && object.id==this.id);
+            if(object.title.equals(this.title) &&
+                ((object.description==null && this.description==null)|| object.description.equals(this.description))
+                    && object.id.equals(this.id));
                 return true;
         }
         return false;
+    }
+
+    public boolean valid(){
+        return(start.getTime()<end.getTime());
     }
 }

@@ -117,9 +117,11 @@ public class ListEvents {
     public void merge(ListEvents toAdd){
         List<Event> list = toAdd.getEventlist();
         for (int i = 0; i < list.size(); i++) {
-            if(!eventlist.contains(list.get(i))){
-                eventlist.add(list.get(i));
-                addDates(list.get(i));
+            if(list.get(i).valid()) {
+                if (!eventlist.contains(list.get(i))) {
+                    eventlist.add(list.get(i));
+                    addDates(list.get(i));
+                }
             }
         }
     }
@@ -135,4 +137,13 @@ public class ListEvents {
             var.add(Calendar.DATE,1);
         }
     }
+
+    public void add(EventData event)
+    {
+        Date start = new Date(Long.parseLong(event.startsAt));
+        Date end = new Date(Long.parseLong(event.endsAt));
+        Event e = new Event(event.id,event.title,event.description,start,end);
+        add(e);
+    }
+
 }

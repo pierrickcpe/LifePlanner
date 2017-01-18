@@ -4,8 +4,8 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="blue">#ff33b5e5</color>
-    <color name="event">#86ffdd</color>
-    <color name="event_bis">#c4faeb</color>
+    <color name="current">#ffa1a7</color>
+    <color name="event">#c4faeb</color>
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="grey">#acacac</color>

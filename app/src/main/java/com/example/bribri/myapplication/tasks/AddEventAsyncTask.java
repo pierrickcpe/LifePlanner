@@ -1,6 +1,8 @@
 package com.example.bribri.myapplication.tasks;
 
-import android.content.Context;
+/**
+ * Created by bribri on 17/01/2017.
+ */
 import android.os.AsyncTask;
 
 import java.io.BufferedReader;
@@ -12,7 +14,6 @@ import com.example.bribri.myapplication.models.Response;
 import com.example.bribri.myapplication.models.User;
 import com.example.bribri.myapplication.tools.InternalSearcher;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONObject;
 
@@ -21,28 +22,29 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by bribri on 12/01/2017.
  */
 
-public class LoginAsyncTask extends AsyncTask<User,Void,String> {
-    public interface LoginListener{
-        public void onLogin(String result);
+public class AddEventAsyncTask extends AsyncTask<Event,Void,String> {
+    public interface AddEventListener{
+        public void onAddEvent(String result);
     }
 
-    private LoginListener Listener;
+    private AddEventListener Listener;
     private User user;
+    private Event event;
     private Gson gson;
 
-    protected String doInBackground(User... credentials) {
+    protected String doInBackground(Event... newEvent) {
 
-        user=credentials[0];
+        event=newEvent[0];
 
         try {
-            String loginURL = InternalSearcher.getUrl()+"/user/auth";
+            user = InternalSearcher.getCredential();
+
+            String loginURL = InternalSearcher.getUrl()+"/event/create";
             if(loginURL==null)
                 return null;
             URL url_test = new URL(loginURL);
@@ -56,8 +58,12 @@ public class LoginAsyncTask extends AsyncTask<User,Void,String> {
 
             JSONObject json = new JSONObject();
 
-            json.put("login",user.username);
-            json.put("pwd", user.password);
+            json.put("author",user.id);
+            json.put("title", event.title);
+            json.put("description",event.description );
+            json.put("startsAt", String.valueOf(event.start.getTime()));
+            json.put("endsAt",String.valueOf(event.end.getTime()));
+            json.put("id", event.id);
 
             OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
             wr.write(json.toString());
@@ -74,24 +80,24 @@ public class LoginAsyncTask extends AsyncTask<User,Void,String> {
                     sb.append(output);
                 }
                 String test = sb.toString();
-                if(!test.equals(null))
-                    gson = new Gson();
-                    Response res = gson.fromJson(test, Response.class);
-                    return res.response;
+                gson = new Gson();
+                Response res = gson.fromJson(test, Response.class);
+                return res.response;
             }
-            return "fail";
+            return null;
 
         }catch(Exception e){
-            return e.getMessage();
+            String error =e.getMessage();
         }
 
+        return null;
     }
 
     protected void onPostExecute(String result) {
-        Listener.onLogin(result);
+        Listener.onAddEvent(result);
     }
 
-    public void setLoginListener(LoginListener LL){
+    public void setAddEventListener(AddEventListener LL){
         Listener = LL;
     }
 }

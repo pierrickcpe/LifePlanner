@@ -40,16 +40,22 @@ public class LoginActivity extends AppCompatActivity {
         bLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(InternalSearcher.getUrl()==null){
+                    Toast.makeText(getApplicationContext(),
+                            "Invalid url", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 user = new User(eUserName.getText().toString(),ePassword.getText().toString());
                 LoginAsyncTask LoginThread = new LoginAsyncTask();
                 LoginAsyncTask.LoginListener LoginListener = new LoginAsyncTask.LoginListener(){
-                    @Override public void onLogin(boolean result){
-                        if(result){
+                    @Override public void onLogin(String result){
+                        try{
+                            Long.parseLong(result);
                             Intent intent = new Intent(LoginActivity.this,ProfileActivity.class);
+                            user.id = result;
                             InternalSaver.saveCredentials(user);
                             startActivity(intent);
-                        }
-                        else{
+                        }catch(Exception e){
                             Toast.makeText(getApplicationContext(), "Wrong Credentials : "+counter + " tries left",Toast.LENGTH_SHORT).show();
                             counter--;
                             if (counter == 0) {
@@ -89,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
                             "Passwords don't match", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(eUserName.getText().toString()==""){
+                if(eUserName.getText().toString().equals("")){
                     Toast.makeText(getApplicationContext(),
                             "Invalid UserName", Toast.LENGTH_SHORT).show();
                     return;
@@ -104,18 +110,16 @@ public class LoginActivity extends AppCompatActivity {
                 user = new User(eUserName.getText().toString(),ePassword.getText().toString());
                 SignUpAsyncTask SignUpThread = new SignUpAsyncTask();
                 SignUpAsyncTask.SignUpListener SignUpListener = new SignUpAsyncTask.SignUpListener(){
-                    @Override public void onSignUp(boolean result){
+                    @Override public void onSignUp(Boolean result){
                         if(result){
-                            Intent intent = new Intent(LoginActivity.this,ProfileActivity.class);
-                            InternalSaver.saveCredentials(user);
-                            startActivity(intent);
+                            eEepassword.setVisibility(View.GONE);
+                            bLogin.setVisibility(View.VISIBLE);
+                            bRegister.setVisibility(View.VISIBLE);
+                            bSignIn.setVisibility(View.GONE);
+                            Toast.makeText(getApplicationContext(), "User created",Toast.LENGTH_SHORT).show();
                         }
                         else{
-                            Toast.makeText(getApplicationContext(), "Wrong Credentials : "+counter + " tries left",Toast.LENGTH_SHORT).show();
-                            counter--;
-                            if (counter == 0) {
-                                bLogin.setEnabled(false);
-                            }
+                            Toast.makeText(getApplicationContext(), "Wrong Credentials",Toast.LENGTH_SHORT).show();
                         }
                     }
                 };

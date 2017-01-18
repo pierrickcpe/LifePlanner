@@ -12,6 +12,11 @@
         <item>@string/days</item>
     </string-array>
 
+    <string-array name="action">
+        <item>@string/edit</item>
+        <item>@string/delete</item>
+    </string-array>
+
     <string-array name="repetition">
         <item>@string/none</item>
         <item>@string/daily</item>
@@ -20,4 +25,5 @@
         <item>@string/monthly</item>
         <item>@string/yearly</item>
     </string-array>
+    <string name="edit">Edit</string>
 </resources>

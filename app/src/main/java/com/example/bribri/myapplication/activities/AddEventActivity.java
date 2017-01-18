@@ -1,14 +1,20 @@
 package com.example.bribri.myapplication.activities;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatCheckBox;
+import android.support.v7.widget.AppCompatSpinner;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -22,6 +28,7 @@ import com.example.bribri.myapplication.models.Event;
 import java.util.Calendar;
 import java.util.Date;
 
+import static com.example.bribri.myapplication.R.id.custom_reminder_holder;
 import static com.example.bribri.myapplication.tools.Formatter.getDate;
 import static com.example.bribri.myapplication.tools.Formatter.getTime;
 
@@ -31,6 +38,7 @@ public class AddEventActivity extends AppCompatActivity {
     TextView TVevent_start_time;
     TextView TVevent_end_date;
     TextView TVevent_end_time;
+    AppCompatSpinner spinner;
     AppCompatCheckBox CBevent_end_checkbox;
     Calendar startCalendar;
     Calendar endCalendar;
@@ -39,6 +47,7 @@ public class AddEventActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
+        setupUI(findViewById(R.id.activity_add_event));
         Bundle extras = getIntent().getExtras();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -67,7 +76,9 @@ public class AddEventActivity extends AppCompatActivity {
                 startCalendar.set(Calendar.YEAR, year);
                 startCalendar.set(Calendar.MONTH, monthOfYear);
                 startCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                endCalendar = startCalendar;
+                endCalendar.set(Calendar.YEAR, year);
+                endCalendar.set(Calendar.MONTH, monthOfYear);
+                endCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 endCalendar.add(Calendar.HOUR,1);
                 TVevent_end_date.setText(getDate(endCalendar));
                 TVevent_start_date.setText(getDate(startCalendar));
@@ -83,6 +94,8 @@ public class AddEventActivity extends AppCompatActivity {
                 endCalendar.set(Calendar.MONTH, monthOfYear);
                 endCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 TVevent_end_date.setText(getDate(endCalendar));
+                if(startCalendar.equals(endCalendar))
+                    endCalendar.add(Calendar.DAY_OF_MONTH, dayOfMonth);
             }
         };
 
@@ -158,6 +171,22 @@ public class AddEventActivity extends AppCompatActivity {
             }
         });
 
+        spinner = (AppCompatSpinner) findViewById(R.id.event_reminder);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(position==2)
+                    findViewById(custom_reminder_holder).setVisibility(View.VISIBLE);
+                else
+                    findViewById(custom_reminder_holder).setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     @Override
@@ -194,7 +223,8 @@ public class AddEventActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
                 return false;
             }
-            Event newEvent = new Event(1,title.getText().toString(),description.getText().toString(),startCalendar.getTime(),endCalendar.getTime());
+
+            Event newEvent = new Event("",title.getText().toString(),description.getText().toString(),startCalendar.getTime(),endCalendar.getTime());
 
             Intent intent = new Intent(AddEventActivity.this, MainActivity.class);
             intent.putExtra("NewEvent", newEvent);
@@ -206,6 +236,33 @@ public class AddEventActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    public void setupUI(View view) {
 
+        // Set up touch listener for non-text box views to hide keyboard.
+        if (!(view instanceof EditText)) {
+            view.setOnTouchListener(new View.OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
+                    hideSoftKeyboard(AddEventActivity.this);
+                    return false;
+                }
+            });
+        }
+
+        //If a layout container, iterate over children and seed recursion.
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                View innerView = ((ViewGroup) view).getChildAt(i);
+                setupUI(innerView);
+            }
+        }
+    }
+
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) activity.getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(
+                activity.getCurrentFocus().getWindowToken(), 0);
+    }
 
 }

@@ -7,6 +7,7 @@ package com.example.bribri.myapplication.tasks;
 import android.os.AsyncTask;
 import android.util.Pair;
 
+import com.example.bribri.myapplication.models.Response;
 import com.example.bribri.myapplication.models.User;
 import com.example.bribri.myapplication.tools.InternalSearcher;
 import com.google.gson.Gson;
@@ -38,20 +39,20 @@ import java.util.List;
 
 public class SignUpAsyncTask extends AsyncTask<User, String, Boolean> {
     public interface SignUpListener{
-        public void onSignUp(boolean result);
+        public void onSignUp(Boolean result);
     };
 
     private SignUpListener Listener;
     private User user;
+    private Gson gson;
 
     protected Boolean doInBackground(User... credential) {
-        int count =credential.length;
 
         user=credential[0];
 
         String loginURL = InternalSearcher.getUrl()+"/user/create";
         if(loginURL==null)
-            return false;
+            return null;
 
         StringBuffer chaine = new StringBuffer("");
         try{
@@ -76,13 +77,17 @@ public class SignUpAsyncTask extends AsyncTask<User, String, Boolean> {
             StringBuilder sb = new StringBuilder();
             int HttpResult = con.getResponseCode();
             if(HttpResult==200){
-                Reader reader = new InputStreamReader(con.getInputStream(), "utf-8");
-                Gson gson = new Gson();
-                String test =gson.toJson(reader);
-                if(test.equals("success"))
-                    return true;
+                BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"));
+                String output;
+                while ((output = br.readLine()) != null) {
+                    sb.append(output);
+                }
+                String test = sb.toString();
+                gson = new Gson();
+                Response res = gson.fromJson(test, Response.class);
+                return res.response.equals("success");
             }
-            return false;
+            return null;
 
         } catch (IOException e) {
             // writing exception to log
@@ -92,7 +97,7 @@ public class SignUpAsyncTask extends AsyncTask<User, String, Boolean> {
             // Do something to recover ... or kill the app.
         }
 
-        return false;
+        return null;
     }
 
     protected void onPostExecute(Boolean result) {

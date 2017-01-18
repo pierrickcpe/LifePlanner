@@ -113,4 +113,5 @@
     <string name="disconnect">Disconnect</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_delete">Delete</string>
+    <string name="action_event">Choose Action</string>
 </resources>

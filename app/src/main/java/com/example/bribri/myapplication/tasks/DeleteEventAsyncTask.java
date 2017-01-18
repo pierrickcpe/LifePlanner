@@ -1,48 +1,48 @@
+
 package com.example.bribri.myapplication.tasks;
 
-import android.content.Context;
-import android.os.AsyncTask;
+/**
+ * Created by bribri on 17/01/2017.
+ */
+        import android.os.AsyncTask;
 
-import java.io.BufferedReader;
-import java.lang.reflect.Type;
-import android.util.Base64;
+        import com.example.bribri.myapplication.models.Event;
+        import com.example.bribri.myapplication.models.Response;
+        import com.example.bribri.myapplication.models.User;
+        import com.example.bribri.myapplication.tools.InternalSearcher;
+        import com.google.gson.Gson;
 
-import com.example.bribri.myapplication.models.Event;
-import com.example.bribri.myapplication.models.Response;
-import com.example.bribri.myapplication.models.User;
-import com.example.bribri.myapplication.tools.InternalSearcher;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+        import org.json.JSONObject;
 
-import org.json.JSONObject;
-
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.List;
-import java.util.UUID;
+        import java.io.BufferedReader;
+        import java.io.InputStreamReader;
+        import java.io.OutputStreamWriter;
+        import java.io.Reader;
+        import java.net.HttpURLConnection;
+        import java.net.URL;
 
 /**
  * Created by bribri on 12/01/2017.
  */
 
-public class LoginAsyncTask extends AsyncTask<User,Void,String> {
-    public interface LoginListener{
-        public void onLogin(String result);
+public class DeleteEventAsyncTask extends AsyncTask<Event,Void,String> {
+    public interface DeleteEventListener{
+        public void onDeleteEvent(String result);
     }
 
-    private LoginListener Listener;
+    private DeleteEventListener Listener;
     private User user;
+    private Event event;
     private Gson gson;
 
-    protected String doInBackground(User... credentials) {
+    protected String doInBackground(Event... e) {
 
-        user=credentials[0];
+        event=e[0];
 
         try {
-            String loginURL = InternalSearcher.getUrl()+"/user/auth";
+            user = InternalSearcher.getCredential();
+
+            String loginURL = InternalSearcher.getUrl()+"/event/delete";
             if(loginURL==null)
                 return null;
             URL url_test = new URL(loginURL);
@@ -56,8 +56,8 @@ public class LoginAsyncTask extends AsyncTask<User,Void,String> {
 
             JSONObject json = new JSONObject();
 
-            json.put("login",user.username);
-            json.put("pwd", user.password);
+            json.put("author",user.id);
+            json.put("id", event.id);
 
             OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
             wr.write(json.toString());
@@ -74,24 +74,24 @@ public class LoginAsyncTask extends AsyncTask<User,Void,String> {
                     sb.append(output);
                 }
                 String test = sb.toString();
-                if(!test.equals(null))
-                    gson = new Gson();
-                    Response res = gson.fromJson(test, Response.class);
-                    return res.response;
+                gson = new Gson();
+                Response res = gson.fromJson(test, Response.class);
+                return res.response;
             }
-            return "fail";
+            return null;
 
-        }catch(Exception e){
-            return e.getMessage();
+        }catch(Exception ex){
+            String error =ex.getMessage();
         }
 
+        return null;
     }
 
     protected void onPostExecute(String result) {
-        Listener.onLogin(result);
+        Listener.onDeleteEvent(result);
     }
 
-    public void setLoginListener(LoginListener LL){
+    public void setDeleteEventListener(DeleteEventListener LL){
         Listener = LL;
     }
 }
